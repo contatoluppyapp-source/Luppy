@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles, Wand2 } from "lucide-react";
 import { IDEAS } from "@/lib/ideas-data";
 import { Idea } from "@/types";
 
@@ -117,8 +117,14 @@ export default function IdeasPage() {
     router.push("/upload");
   };
 
+  const handleCreateFromScratch = () => {
+    sessionStorage.removeItem("luppy_reference_image");
+    sessionStorage.removeItem("luppy_reference_idea_name");
+    router.push("/upload");
+  };
+
   return (
-    <div className="min-h-screen bg-[#F5F5F5] pb-10">
+    <div className="min-h-screen bg-cream pb-28">
       {/* Header sticky */}
       <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-border px-5 py-4">
         <div className="flex items-center gap-3">
@@ -146,9 +152,9 @@ export default function IdeasPage() {
           <Sparkles size={16} className="text-white" />
         </div>
         <div>
-          <p className="text-xs font-semibold text-brand">Inspiração beauty</p>
+          <p className="text-xs font-semibold text-brand-deep">Inspiração beauty</p>
           <p className="text-xs text-ink/50 font-light">
-            Escolha uma referência e a IA aplica na sua mão
+            Escolha uma referência ou crie do zero
           </p>
         </div>
       </motion.div>
@@ -158,6 +164,22 @@ export default function IdeasPage() {
         {IDEAS.map((idea, i) => (
           <IdeaCard key={idea.id} idea={idea} index={i} onPick={handlePick} />
         ))}
+      </div>
+
+      {/* CTA sticky "Criar do zero" */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 px-5 pb-5 pt-3 bg-gradient-to-t from-cream via-cream/95 to-transparent pointer-events-none">
+        <div className="max-w-md mx-auto pointer-events-auto">
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            onClick={handleCreateFromScratch}
+            className="w-full py-3.5 rounded-full bg-ink text-white text-sm font-semibold flex items-center justify-center gap-2 active:scale-95 transition-transform soft-shadow"
+          >
+            <Wand2 size={16} />
+            Criar do zero
+          </motion.button>
+        </div>
       </div>
     </div>
   );

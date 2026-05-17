@@ -3,13 +3,22 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Share2, ArrowLeft, Sparkles, Eye, EyeOff } from "lucide-react";
+import { Heart, Share2, ArrowLeft, Sparkles, Eye, EyeOff, Expand } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { ImageViewer } from "@/components/ui/ImageViewer";
 import { MOCK_NAIL_PREVIEWS } from "@/lib/mock-data";
 import { NailPreview } from "@/types";
 import { getPreviewStore } from "@/lib/preview-store";
 
-function NailCard({ preview, index }: { preview: NailPreview; index: number }) {
+function NailCard({
+  preview,
+  index,
+  onOpen,
+}: {
+  preview: NailPreview;
+  index: number;
+  onOpen: (p: NailPreview) => void;
+}) {
   const [saved, setSaved] = useState(false);
   const [showBefore, setShowBefore] = useState(false);
 
@@ -24,7 +33,11 @@ function NailCard({ preview, index }: { preview: NailPreview; index: number }) {
       className={`relative rounded-2xl overflow-hidden bg-surface ${isShort ? "row-span-1" : ""}`}
     >
       {/* Image container */}
-      <div className={`relative w-full ${isShort ? "h-44" : "h-56"}`}>
+      <button
+        onClick={() => onOpen(preview)}
+        className={`relative w-full ${isShort ? "h-44" : "h-56"} active:scale-[0.98] transition-transform`}
+        aria-label={`Abrir ${preview.styleName} em tela cheia`}
+      >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={showBefore ? "before" : "after"}
@@ -43,29 +56,34 @@ function NailCard({ preview, index }: { preview: NailPreview; index: number }) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Save button */}
-        <button
-          onClick={() => setSaved((s) => !s)}
-          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
-            saved
-              ? "bg-brand text-white shadow-md"
-              : "bg-white/80 backdrop-blur-sm text-ink/40 hover:text-brand"
-          }`}
-        >
-          <Heart size={14} fill={saved ? "currentColor" : "none"} />
-        </button>
+        {/* Hint de "abrir" */}
+        <span className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-ink/70">
+          <Expand size={13} />
+        </span>
+      </button>
 
-        {/* Before/After toggle */}
-        {hasBefore && (
-          <button
-            onClick={() => setShowBefore((b) => !b)}
-            className="absolute top-2.5 left-2.5 px-2 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white text-[10px] font-semibold flex items-center gap-1"
-          >
-            {showBefore ? <EyeOff size={11} /> : <Eye size={11} />}
-            {showBefore ? "Antes" : "Depois"}
-          </button>
-        )}
-      </div>
+      {/* Save button */}
+      <button
+        onClick={() => setSaved((s) => !s)}
+        className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+          saved
+            ? "bg-brand text-white shadow-md"
+            : "bg-white/80 backdrop-blur-sm text-ink/40 hover:text-brand"
+        }`}
+      >
+        <Heart size={14} fill={saved ? "currentColor" : "none"} />
+      </button>
+
+      {/* Before/After toggle */}
+      {hasBefore && (
+        <button
+          onClick={() => setShowBefore((b) => !b)}
+          className="absolute top-2.5 left-2.5 px-2 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white text-[10px] font-semibold flex items-center gap-1"
+        >
+          {showBefore ? <EyeOff size={11} /> : <Eye size={11} />}
+          {showBefore ? "Antes" : "Depois"}
+        </button>
+      )}
 
       {/* Info */}
       <div className="px-3 py-2.5">
@@ -86,6 +104,7 @@ export default function ResultsPage() {
   const router = useRouter();
   const [shared, setShared] = useState(false);
   const [previews, setPreviews] = useState<NailPreview[]>([]);
+  const [openPreview, setOpenPreview] = useState<NailPreview | null>(null);
 
   useEffect(() => {
     // 1. Try in-memory store first (bypasses sessionStorage quota limits)
@@ -182,9 +201,24 @@ export default function ResultsPage() {
       {/* Grid */}
       <div className="px-4 grid grid-cols-2 gap-3">
         {previews.map((preview, i) => (
-          <NailCard key={preview.id} preview={preview} index={i} />
+          <NailCard
+            key={preview.id}
+            preview={preview}
+            index={i}
+            onOpen={(p) => setOpenPreview(p)}
+          />
         ))}
       </div>
+
+      {/* Viewer fullscreen */}
+      {openPreview && (
+        <ImageViewer
+          src={openPreview.imageUrl}
+          beforeSrc={openPreview.beforeImageUrl}
+          alt={openPreview.styleName}
+          onClose={() => setOpenPreview(null)}
+        />
+      )}
 
       {/* Bottom CTA */}
       <motion.div
@@ -194,22 +228,16 @@ export default function ResultsPage() {
         className="px-5 mt-8 flex flex-col gap-3"
       >
         <Button
+          variant="glow"
           size="lg"
           fullWidth
-          onClick={() => router.push("/ideas")}
-          className="shadow-xl shadow-brand/25"
+          onClick={() => router.push("/feedback")}
         >
-          ✨ Testar outra
+          Continuar
         </Button>
-        <Button
-          variant="ghost"
-          size="md"
-          fullWidth
-          onClick={() => router.push("/home")}
-          className="text-ink/50 text-sm"
-        >
-          Voltar ao início
-        </Button>
+        <p className="text-[11px] text-ink/40 text-center font-medium">
+          Falta só 1 passo — sua opinião vai construir a Luppy
+        </p>
       </motion.div>
     </div>
   );

@@ -1,22 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
+import { ArrowRight } from "lucide-react";
+import { HeroVisual } from "@/components/home/HeroVisual";
+import { fadeUp } from "@/lib/motion-variants";
 
 export default function HomePage() {
   const router = useRouter();
 
-  // Limpa qualquer referência anterior ao chegar na home
   useEffect(() => {
     sessionStorage.removeItem("luppy_reference_image");
     sessionStorage.removeItem("luppy_reference_idea_name");
@@ -24,87 +18,137 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-between px-6 py-16 overflow-hidden bg-[#ff78cb]">
-      {/* Glow subtil para profundidade */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-white/12 blur-3xl -z-0 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-white/8 blur-3xl -z-0 pointer-events-none" />
+    <div
+      className="relative min-h-screen flex flex-col safe-top safe-bottom overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(180deg, #fff7fb 0%, #ffeaf5 50%, #ffe4f1 78%, #fff1f8 100%)",
+      }}
+    >
+      {/* Blobs difusos — profundidade premium, sem poluição */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 -left-32 w-[480px] h-[480px] rounded-full blur-3xl opacity-60"
+        style={{ background: "#ffd6e8" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-1/3 -right-32 w-[420px] h-[420px] rounded-full blur-3xl opacity-50"
+        style={{ background: "#ffe2ee" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 w-[560px] h-[460px] rounded-full blur-3xl opacity-55"
+        style={{ background: "#ffd9ea" }}
+      />
 
-      {/* Top spacer */}
-      <div />
-
-      {/* Centro: logo + boas-vindas */}
-      <div className="relative z-10 flex flex-col items-center text-center gap-6">
-        {/* Wordmark "Luppy" — mais cheia, com glow */}
-        <motion.h1
+      {/* Topo: boas-vindas + wordmark */}
+      <div className="relative z-10 pt-12 pb-3 px-7 text-center">
+        <motion.p
           initial="hidden"
           animate="visible"
           variants={fadeUp}
           custom={0}
-          className="text-8xl font-bold tracking-tight text-white select-none"
-          style={{
-            letterSpacing: "-0.04em",
-            textShadow:
-              "0 0 32px rgba(255,255,255,0.4), 0 2px 12px rgba(0,0,0,0.08)",
-            fontFeatureSettings: '"ss01"',
-          }}
+          className="text-[12px] font-medium text-ink/50 tracking-[0.22em] uppercase"
+        >
+          Seja bem-vinda ao
+        </motion.p>
+
+        <motion.h1
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          custom={0.1}
+          className="mt-3 text-[5.5rem] leading-[0.95] font-bold text-brand text-glow select-none"
+          style={{ letterSpacing: "-0.045em" }}
         >
           Luppy
         </motion.h1>
 
-        {/* Linha separadora delicada */}
+        {/* Separador delicado */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-          className="w-12 h-px bg-white/50"
+          transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+          className="mx-auto mt-5 w-12 h-px bg-brand/40 origin-center"
         />
 
-        {/* Texto de boas-vindas */}
         <motion.p
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          custom={0.3}
+          className="mt-5 text-[15px] text-ink/55 font-light leading-relaxed tracking-wide"
+        >
+          Aqui você cria a unha
+          <br />
+          que você deseja.
+        </motion.p>
+      </div>
+
+      {/* Hero visual — mão integrada ao fundo, sem card */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        custom={0.25}
+        className="relative z-10 flex-1 w-full px-2 pt-2 pb-4 flex items-center justify-center"
+      >
+        <HeroVisual />
+      </motion.div>
+
+      {/* CTAs */}
+      <div className="relative z-10 px-7 pb-8 flex flex-col gap-3.5">
+        <motion.button
           initial="hidden"
           animate="visible"
           variants={fadeUp}
           custom={0.5}
-          className="text-white/90 text-base font-light tracking-wide"
-        >
-          Bem-vinda ao Luppy
-        </motion.p>
-      </div>
-
-      {/* CTAs */}
-      <div className="relative z-10 w-full flex flex-col items-center gap-3">
-        <motion.button
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          custom={0.75}
           onClick={() => router.push("/ideas")}
-          className="w-full py-4 rounded-full bg-white text-[#ff78cb] text-base font-semibold tracking-wide transition-all duration-200 active:scale-95"
+          className="w-full py-[18px] rounded-full text-white text-[15px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
           style={{
+            background:
+              "linear-gradient(135deg, #ff5cc0 0%, #f84587 55%, #e93088 100%)",
             boxShadow:
-              "0 8px 32px rgba(255, 120, 203, 0.4), 0 2px 8px rgba(255,255,255,0.2)",
+              "0 14px 32px -8px rgba(248, 69, 135, 0.45), 0 4px 12px -2px rgba(216, 70, 142, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35)",
+            letterSpacing: "0.01em",
           }}
         >
-          Explorar Galeria
+          Testar Luppy
+          <ArrowRight size={18} strokeWidth={2.2} />
         </motion.button>
 
-        <motion.button
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          custom={0.9}
-          onClick={() => router.push("/upload")}
-          className="w-full py-3.5 rounded-full bg-white/10 border border-white/40 text-white text-sm font-medium tracking-wide backdrop-blur-sm transition-all duration-200 active:scale-95 hover:bg-white/15"
+          custom={0.6}
         >
-          Criar do zero
-        </motion.button>
+          <Link
+            href="/designer"
+            className="w-full py-[15px] px-6 rounded-full text-ink/75 text-[13.5px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5"
+            style={{
+              background: "rgba(255, 255, 255, 0.65)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              boxShadow:
+                "0 6px 18px -6px rgba(216, 70, 142, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6)",
+            }}
+          >
+            Sou uma profissional
+            <span className="text-ink/40 text-[11.5px] font-medium">
+              · ajude a construir
+            </span>
+          </Link>
+        </motion.div>
 
         <motion.p
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          custom={1.05}
-          className="text-white/55 text-xs font-light tracking-wide mt-1"
+          custom={0.7}
+          className="text-[11px] text-ink/40 text-center font-medium tracking-[0.12em] uppercase pt-2"
         >
           Gratuito · Sem cadastro · Resultado em segundos
         </motion.p>

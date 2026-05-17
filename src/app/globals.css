@@ -38,15 +38,45 @@ body {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: #fafafa;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d9d9d9;
+  background: #eeeeee;
   border-radius: 9999px;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Profundidade leve, premium — não usar excesso. */
+  .soft-shadow {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+
+  .soft-shadow-pink {
+    box-shadow: 0 12px 36px rgba(249, 49, 173, 0.18),
+      0 2px 8px rgba(249, 49, 173, 0.08);
+  }
+
+  /* Glow sutil — usar APENAS no logo do hero. */
+  .text-glow {
+    text-shadow: 0 0 24px rgba(249, 49, 173, 0.22);
+  }
+
+  /* Glass apenas pontual (CTA secundário, modal de loading). */
+  .glass-subtle {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .gradient-soft {
+    background: linear-gradient(180deg, #ffeef6 0%, #ffe0ee 100%);
+  }
+
+  .gradient-pastel {
+    background: linear-gradient(180deg, #ffe0ee 0%, #ffd6e8 100%);
   }
 }
