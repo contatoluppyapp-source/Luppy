@@ -9,9 +9,8 @@ export function HeroVisual() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-full mx-auto"
+      className="relative w-full h-full mx-auto"
       style={{
-        height: "clamp(380px, 56vh, 600px)",
         maxWidth: "460px",
       }}
     >

@@ -19,7 +19,7 @@ export default function HomePage() {
 
   return (
     <div
-      className="relative min-h-screen flex flex-col safe-top safe-bottom overflow-hidden"
+      className="relative h-[100dvh] flex flex-col safe-top safe-bottom overflow-hidden"
       style={{
         background:
           "linear-gradient(180deg, #fff7fb 0%, #ffeaf5 50%, #ffe4f1 78%, #fff1f8 100%)",
@@ -43,7 +43,7 @@ export default function HomePage() {
       />
 
       {/* Topo: boas-vindas + wordmark */}
-      <div className="relative z-10 pt-12 pb-3 px-7 text-center">
+      <div className="relative z-10 shrink-0 pt-6 pb-1 px-7 text-center">
         <motion.p
           initial="hidden"
           animate="visible"
@@ -59,8 +59,11 @@ export default function HomePage() {
           animate="visible"
           variants={fadeUp}
           custom={0.1}
-          className="mt-3 text-[5.5rem] leading-[0.95] font-bold text-brand text-glow select-none"
-          style={{ letterSpacing: "-0.045em" }}
+          className="mt-2 leading-[0.95] font-bold text-brand text-glow select-none"
+          style={{
+            letterSpacing: "-0.045em",
+            fontSize: "clamp(4.25rem, 17vw, 5.5rem)",
+          }}
         >
           Luppy
         </motion.h1>
@@ -70,7 +73,7 @@ export default function HomePage() {
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-          className="mx-auto mt-5 w-12 h-px bg-brand/40 origin-center"
+          className="mx-auto mt-3 w-12 h-px bg-brand/40 origin-center"
         />
 
         <motion.p
@@ -78,7 +81,7 @@ export default function HomePage() {
           animate="visible"
           variants={fadeUp}
           custom={0.3}
-          className="mt-5 text-[15px] text-ink/55 font-light leading-relaxed tracking-wide"
+          className="mt-3 text-[14px] text-ink/55 font-light leading-snug tracking-wide"
         >
           Aqui você cria a unha
           <br />
@@ -92,20 +95,20 @@ export default function HomePage() {
         animate="visible"
         variants={fadeUp}
         custom={0.25}
-        className="relative z-10 flex-1 w-full px-2 pt-2 pb-4 flex items-center justify-center"
+        className="relative z-10 flex-1 min-h-0 w-full px-2 flex items-center justify-center"
       >
         <HeroVisual />
       </motion.div>
 
       {/* CTAs */}
-      <div className="relative z-10 px-7 pb-8 flex flex-col gap-3.5">
+      <div className="relative z-10 shrink-0 px-7 pb-5 flex flex-col gap-2.5">
         <motion.button
           initial="hidden"
           animate="visible"
           variants={fadeUp}
           custom={0.5}
           onClick={() => router.push("/ideas")}
-          className="w-full py-[18px] rounded-full text-white text-[15px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+          className="w-full py-[15px] rounded-full text-white text-[15px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
           style={{
             background:
               "linear-gradient(135deg, #ff5cc0 0%, #f84587 55%, #e93088 100%)",
@@ -126,7 +129,7 @@ export default function HomePage() {
         >
           <Link
             href="/designer"
-            className="w-full py-[15px] px-6 rounded-full text-ink/75 text-[13.5px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5"
+            className="w-full py-[13px] px-6 rounded-full text-ink/75 text-[13.5px] font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5"
             style={{
               background: "rgba(255, 255, 255, 0.65)",
               backdropFilter: "blur(8px)",
@@ -148,7 +151,7 @@ export default function HomePage() {
           animate="visible"
           variants={fadeUp}
           custom={0.7}
-          className="text-[11px] text-ink/40 text-center font-medium tracking-[0.12em] uppercase pt-2"
+          className="text-[10.5px] text-ink/40 text-center font-medium tracking-[0.12em] uppercase pt-1"
         >
           Gratuito · Sem cadastro · Resultado em segundos
         </motion.p>

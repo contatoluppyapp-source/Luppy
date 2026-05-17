@@ -39,7 +39,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <main className="min-h-screen max-w-md mx-auto relative overflow-x-hidden">
+        <main className="min-h-[100dvh] max-w-md mx-auto relative overflow-x-hidden">
           {children}
         </main>
       </body>
